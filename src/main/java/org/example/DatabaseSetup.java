@@ -5,20 +5,23 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 
 public class DatabaseSetup {
+
     public static void main(String[] args) {
+
         String url = "jdbc:sqlite:slaughterhouse.db";
 
         try (Connection conn = DriverManager.getConnection(url); Statement stmt = conn.createStatement()) {
             stmt.execute("PRAGMA foreign_keys = ON");
 
-            // Create Animals table
+            // Laver alle tabellerne
+            // Animals
             String createAnimalsTable = "CREATE TABLE IF NOT EXISTS Animals (" +
                     "id INTEGER PRIMARY KEY," +
                     "registration_number TEXT NOT NULL" +
                     ")";
             stmt.execute(createAnimalsTable);
 
-            // Create Parts table
+            // Parts
             String createPartsTable = "CREATE TABLE IF NOT EXISTS Parts (" +
                     "id INTEGER PRIMARY KEY," +
                     "animal_id INTEGER NOT NULL," +
@@ -26,7 +29,7 @@ public class DatabaseSetup {
                     ")";
             stmt.execute(createPartsTable);
 
-            // Create Trays table
+            // Trays
             String createTraysTable = "CREATE TABLE IF NOT EXISTS Trays (" +
                     "id INTEGER PRIMARY KEY," +
                     "part_type TEXT NOT NULL," +
@@ -34,7 +37,7 @@ public class DatabaseSetup {
                     ")";
             stmt.execute(createTraysTable);
 
-            // Create Products table
+            // Products
             String createProductsTable = "CREATE TABLE IF NOT EXISTS Products (" +
                     "id INTEGER PRIMARY KEY," +
                     "tray_id INTEGER NOT NULL," +
@@ -42,7 +45,7 @@ public class DatabaseSetup {
                     ")";
             stmt.execute(createProductsTable);
 
-            // Create ProductParts table
+            // Product Parts
             String createProductPartsTable = "CREATE TABLE IF NOT EXISTS ProductParts (" +
                     "product_id INTEGER," +
                     "part_id INTEGER," +

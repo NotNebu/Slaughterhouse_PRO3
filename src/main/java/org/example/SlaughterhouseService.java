@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class SlaughterhouseServiceImpl extends SlaughterhouseServiceGrpc.SlaughterhouseServiceImplBase {
+public class SlaughterhouseService extends SlaughterhouseServiceGrpc.SlaughterhouseServiceImplBase {
 
     private static final String DB_URL = "jdbc:sqlite:slaughterhouse.db";
 
