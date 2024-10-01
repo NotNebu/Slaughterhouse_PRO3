@@ -1,4 +1,4 @@
-package org.example;
+package org.slaugterhouse;
 
 import io.grpc.ServerBuilder;
 

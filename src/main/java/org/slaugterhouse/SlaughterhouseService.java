@@ -1,8 +1,8 @@
-package org.example;
+package org.slaugterhouse;
 
 import io.grpc.stub.StreamObserver;
-import org.example.slaughterhouse.SlaughterServiceProto;
-import org.example.slaughterhouse.SlaughterhouseServiceGrpc;
+import org.slaugterhouse.slaughterhouse.SlaughterServiceProto;
+import org.slaugterhouse.slaughterhouse.SlaughterhouseServiceGrpc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
