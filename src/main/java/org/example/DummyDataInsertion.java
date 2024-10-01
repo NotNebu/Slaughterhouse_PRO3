@@ -10,9 +10,9 @@ public class DummyDataInsertion {
 
         try (Connection conn = DriverManager.getConnection(url); Statement stmt = conn.createStatement()) {
             // animals
-            stmt.execute("INSERT INTO Animals (id, registration_number) VALUES (1, 'A001')");
-            stmt.execute("INSERT INTO Animals (id, registration_number) VALUES (2, 'A002')");
-            stmt.execute("INSERT INTO Animals (id, registration_number) VALUES (3, 'A003')");
+            stmt.execute("INSERT INTO Animals (id, registration_number) VALUES (1, 'A01')");
+            stmt.execute("INSERT INTO Animals (id, registration_number) VALUES (2, 'A02')");
+            stmt.execute("INSERT INTO Animals (id, registration_number) VALUES (3, 'A03')");
 
             // parts
             stmt.execute("INSERT INTO Parts (id, animal_id) VALUES (1, 1)");
@@ -21,7 +21,7 @@ public class DummyDataInsertion {
             stmt.execute("INSERT INTO Parts (id, animal_id) VALUES (4, 3)");
 
             // trays
-            stmt.execute("INSERT INTO Trays (id, part_type, max_capacity) VALUES (1, 'Leg', 100.0)");
+            stmt.execute("INSERT INTO Trays (id, part_type, max_capacity) VALUES (1, 'Spareribs', 100.0)");
             stmt.execute("INSERT INTO Trays (id, part_type, max_capacity) VALUES (2, 'Ribs', 150.0)");
 
             // products
