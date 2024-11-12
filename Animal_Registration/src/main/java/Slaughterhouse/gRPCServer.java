@@ -1,5 +1,6 @@
 package Slaughterhouse;
 
+import Slaughterhouse.Service.SlaughterhouseService;
 import io.grpc.ServerBuilder;
 
 import java.io.IOException;

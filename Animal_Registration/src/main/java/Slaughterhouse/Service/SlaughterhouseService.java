@@ -1,4 +1,4 @@
-package Slaughterhouse;
+package Slaughterhouse.Service;
 
 import io.grpc.stub.StreamObserver;
 import org.example.slaughterhouse.SlaughterServiceProto;

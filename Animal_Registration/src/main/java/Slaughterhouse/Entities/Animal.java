@@ -1,4 +1,4 @@
-package Slaughterhouse;
+package Slaughterhouse.Entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,7 +21,7 @@ public class Animal {
     private double weight;
 
     @Column(name = "arrival_date", nullable = false)
-    private LocalDate arrivalDate;
+    private String arrivalDate;
 
     @Column(name = "origin", nullable = false)
     private String origin;
@@ -53,11 +53,11 @@ public class Animal {
         this.weight = weight;
     }
 
-    public LocalDate getArrivalDate() {
+    public String getArrivalDate() {
         return arrivalDate;
     }
 
-    public void setArrivalDate(LocalDate arrivalDate) {
+    public void setArrivalDate(String arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 
