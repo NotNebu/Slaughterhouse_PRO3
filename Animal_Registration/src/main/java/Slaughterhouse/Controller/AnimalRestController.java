@@ -4,9 +4,6 @@ import Slaughterhouse.Entities.Animal;
 import Slaughterhouse.Repository.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
