@@ -5,6 +5,7 @@ import Slaughterhouse.Entities.Tray;
 import Slaughterhouse.Repository.ProductRepository;
 import Slaughterhouse.Repository.TrayRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,9 +34,13 @@ public class PackingController {
 
     // Get all products
     @GetMapping("/products")
-    public List<Product> getAllProducts() {
+    public List<Product> getProducts(@RequestParam(required = false) Product.ProductStatus status) {
+        if (status != null) {
+            return productRepository.findByStatus(status);
+        }
         return productRepository.findAll();
     }
+
 
     // Get a product by ID
     @GetMapping("/products/{id}")
@@ -54,5 +59,15 @@ public class PackingController {
                         .anyMatch(part -> part.getAnimal().getId().equals(animalId)))
                 .toList();
     }
+
+    @PutMapping("/products/{id}/recall")
+    public ResponseEntity<String> markProductRecalled(@PathVariable Integer id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        product.setStatus(Product.ProductStatus.RECALLED);
+        productRepository.save(product);
+        return ResponseEntity.ok("Product marked as recalled");
+    }
+
 }
 

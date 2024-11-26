@@ -1,7 +1,6 @@
 package Slaughterhouse.Entities;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -22,6 +21,11 @@ public class Product {
     )
     private List<Tray> trays;
 
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status = ProductStatus.ACTIVE;
+
+    // Getter and setter for 'id'
     public Integer getId() {
         return id;
     }
@@ -30,6 +34,7 @@ public class Product {
         this.id = id;
     }
 
+    // Getter and setter for 'description'
     public String getDescription() {
         return description;
     }
@@ -38,6 +43,7 @@ public class Product {
         this.description = description;
     }
 
+    // Getter and setter for 'trays'
     public List<Tray> getTrays() {
         return trays;
     }
@@ -45,5 +51,19 @@ public class Product {
     public void setTrays(List<Tray> trays) {
         this.trays = trays;
     }
-}
 
+    // Getter and setter for 'status'
+    public ProductStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProductStatus status) {
+        this.status = status;
+    }
+
+    // Enum for ProductStatus
+    public enum ProductStatus {
+        ACTIVE,
+        RECALLED
+    }
+}

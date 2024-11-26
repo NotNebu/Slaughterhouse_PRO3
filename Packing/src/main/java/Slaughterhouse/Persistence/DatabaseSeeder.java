@@ -39,14 +39,15 @@ public class DatabaseSeeder implements CommandLineRunner {
         Product product1 = new Product();
         product1.setDescription("Pack of 2 Legs");
         product1.setTrays(List.of(legTray));
+        product1.setStatus(Product.ProductStatus.ACTIVE); // Set default status
 
         Product product2 = new Product();
         product2.setDescription("Pack of Wings");
         product2.setTrays(List.of(wingTray));
+        product2.setStatus(Product.ProductStatus.ACTIVE); // Set default status
 
         productRepository.saveAll(List.of(product1, product2));
 
         System.out.println("Packing Service database seeded with dummy data.");
     }
 }
-

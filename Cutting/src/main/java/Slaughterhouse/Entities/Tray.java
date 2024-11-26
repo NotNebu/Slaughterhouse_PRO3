@@ -1,9 +1,9 @@
 package Slaughterhouse.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import Slaughterhouse.Entities.Part;
 import jakarta.persistence.*;
-import java.time.LocalDate;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,10 +20,10 @@ public class Tray {
     private double capacity;
 
     @Column(name = "current_weight", nullable = false)
-    private double currentWeight = 0; // Add this field
+    private double currentWeight = 0;
 
-    @OneToMany(mappedBy = "tray")
-    private List<Part> parts;
+    @OneToMany(mappedBy = "tray", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Part> parts = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -49,19 +49,35 @@ public class Tray {
         this.capacity = capacity;
     }
 
+    public double getCurrentWeight() {
+        return currentWeight;
+    }
+
+    public void setCurrentWeight(double currentWeight) {
+        if (currentWeight > this.capacity) {
+            throw new IllegalArgumentException("Current weight cannot exceed capacity.");
+        }
+        this.currentWeight = currentWeight;
+    }
+
     public List<Part> getParts() {
-        return parts;
+        return parts == null ? new ArrayList<>() : parts;
     }
 
     public void setParts(List<Part> parts) {
         this.parts = parts;
     }
 
-    public double getCurrentWeight() {
-        return currentWeight;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tray tray = (Tray) o;
+        return id != null && id.equals(tray.id);
     }
 
-    public void setCurrentWeight(double currentWeight) {
-        this.currentWeight = currentWeight;
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
