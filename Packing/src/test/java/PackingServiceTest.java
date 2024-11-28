@@ -1,3 +1,5 @@
+import Slaughterhouse.Entities.Animal;
+import Slaughterhouse.Entities.Part;
 import Slaughterhouse.Entities.Product;
 import Slaughterhouse.Entities.Tray;
 import Slaughterhouse.Repository.ProductRepository;
@@ -94,6 +96,10 @@ public class PackingServiceTest {
 
         Tray tray = new Tray();
         tray.setId(1);
+        tray.setParts(List.of(new Part() {{
+            setId(1);
+            setAnimal(new Animal() {{ setId(1); }});
+        }}));
 
         product.setTrays(List.of(tray));
 
@@ -101,8 +107,10 @@ public class PackingServiceTest {
 
         mockMvc.perform(get("/api/packing/products/recall/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(1));
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].description").value("Test Product"));
     }
+
 
     // Test for marking a product as recalled
     @Test
