@@ -1,5 +1,6 @@
 package Slaughterhouse.Service;
 
+import Slaughterhouse.Entities.Part;
 import Slaughterhouse.Entities.Product;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -18,8 +19,21 @@ public class PackingService {
         this.restTemplate = restTemplate;
     }
 
+    // Fetch parts related to a specific animal from Cutting Service
+    public List<Part> getPartsByAnimal(Integer animalId) {
+        String url = "http://localhost:8081/api/cutting/parts/animal/" + animalId; // Endpoint for Cutting Service
+        ResponseEntity<List<Part>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Part>>() {}
+        );
+        return response.getBody();
+    }
+
+    // Fetch products related to a specific animal
     public List<Product> getProductsByAnimal(Integer animalId) {
-        String url = "http://packing-service:8082/api/packing/products/recall/" + animalId;
+        String url = "http://localhost:8082/api/packing/products/recall/" + animalId; // Endpoint for fetching products
         ResponseEntity<List<Product>> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
@@ -29,8 +43,9 @@ public class PackingService {
         return response.getBody();
     }
 
+    // Mark a product as recalled
     public void markProductRecalled(Integer productId) {
-        String url = "http://packing-service:8082/api/packing/products/" + productId + "/recall";
-        restTemplate.put(url, null);
+        String url = "http://localhost:8082/api/packing/products/" + productId + "/recall";
+        restTemplate.put(url, null); // PUT request to update product status
     }
 }

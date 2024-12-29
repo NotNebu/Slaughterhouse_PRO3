@@ -1,5 +1,6 @@
 package Slaughterhouse.Service;
 
+import Slaughterhouse.Entities.Animal;
 import Slaughterhouse.Entities.Part;
 import Slaughterhouse.Entities.Product;
 import Slaughterhouse.Entities.Recall;
@@ -14,25 +15,29 @@ import java.util.stream.Collectors;
 @Service
 public class RecallService {
 
-
     @Autowired
     private RecallRepository recallRepository;
+
     @Autowired
     private CuttingService cuttingService;
+
     @Autowired
     private PackingService packingService;
 
     public Recall initiateRecall(Integer animalId) {
-        // Query Cutting Service
-        List<Part> affectedParts = cuttingService.getPartsByAnimal(animalId);
+        // Fetch the animal details from CuttingService
+        Animal animal = cuttingService.getAnimalById(animalId);
+        if (animal == null) {
+            throw new RuntimeException("Animal not found with ID: " + animalId);
+        }
 
-        // Query Packing Service
+        // Find all affected products via PackingService
         List<Product> affectedProducts = packingService.getProductsByAnimal(animalId);
 
-        // Mark products as recalled (via Packing Service API)
+        // Mark all related products as recalled
         affectedProducts.forEach(product -> packingService.markProductRecalled(product.getId()));
 
-        // Save recall record
+        // Save recall details to the database
         Recall recall = new Recall();
         recall.setAnimalId(animalId);
         recall.setDateInitiated(LocalDate.now().toString());

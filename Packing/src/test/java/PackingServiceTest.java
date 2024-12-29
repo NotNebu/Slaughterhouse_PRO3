@@ -32,7 +32,6 @@ public class PackingServiceTest {
     @MockBean
     private TrayRepository trayRepository;
 
-    // Test for creating a product
     @Test
     public void testCreateProduct() throws Exception {
         Product product = new Product();
@@ -56,7 +55,6 @@ public class PackingServiceTest {
                 .andExpect(jsonPath("$.description").value("Test Product"));
     }
 
-    // Test for getting all products
     @Test
     public void testGetAllProducts() throws Exception {
         Product product = new Product();
@@ -72,7 +70,6 @@ public class PackingServiceTest {
                 .andExpect(jsonPath("$[0].description").value("Test Product"));
     }
 
-    // Test for getting a product by ID
     @Test
     public void testGetProductById() throws Exception {
         Product product = new Product();
@@ -87,7 +84,6 @@ public class PackingServiceTest {
                 .andExpect(jsonPath("$.description").value("Test Product"));
     }
 
-    // Test for recalling products by animal ID
     @Test
     public void testRecallProductsByAnimal() throws Exception {
         Product product = new Product();
@@ -111,8 +107,6 @@ public class PackingServiceTest {
                 .andExpect(jsonPath("$[0].description").value("Test Product"));
     }
 
-
-    // Test for marking a product as recalled
     @Test
     public void testMarkProductRecalled() throws Exception {
         Product product = new Product();

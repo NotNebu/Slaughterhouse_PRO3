@@ -9,21 +9,19 @@ public class Part {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "type", nullable = false)
     private String type;
 
-    @Column(name = "weight", nullable = false)
-    private double weight;
+    private Double weight;
+
+    @ManyToOne
+    @JoinColumn(name = "tray_id", nullable = false)
+    private Tray tray;
 
     @ManyToOne
     @JoinColumn(name = "animal_id", nullable = false)
     private Animal animal;
 
-    @ManyToOne
-    @JoinColumn(name = "tray_id") // Add this mapping
-    private Tray tray;
-
-    // Getters and Setters
+    // Getters and setters
     public Integer getId() {
         return id;
     }
@@ -40,20 +38,12 @@ public class Part {
         this.type = type;
     }
 
-    public double getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
-    }
-
-    public Animal getAnimal() {
-        return animal;
-    }
-
-    public void setAnimal(Animal animal) {
-        this.animal = animal;
     }
 
     public Tray getTray() {
@@ -62,5 +52,13 @@ public class Part {
 
     public void setTray(Tray tray) {
         this.tray = tray;
+    }
+
+    public Animal getAnimal() {
+        return animal;
+    }
+
+    public void setAnimal(Animal animal) {
+        this.animal = animal;
     }
 }

@@ -1,5 +1,8 @@
+import Slaughterhouse.CuttingApplication;
+import Slaughterhouse.Entities.Animal;
 import Slaughterhouse.Entities.Part;
 import Slaughterhouse.Entities.Tray;
+import Slaughterhouse.Repository.AnimalRepository;
 import Slaughterhouse.Repository.PartRepository;
 import Slaughterhouse.Repository.TrayRepository;
 import org.junit.jupiter.api.Test;
@@ -17,7 +20,7 @@ import java.util.Optional;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(classes = Slaughterhouse.CuttingApplication.class)
+@SpringBootTest(classes = CuttingApplication.class)
 @AutoConfigureMockMvc
 public class CuttingServiceTest {
 
@@ -30,22 +33,40 @@ public class CuttingServiceTest {
     @MockBean
     private TrayRepository trayRepository;
 
-    // Test for registering a new part
+    @MockBean
+    private AnimalRepository animalRepository;
+
+    // Test for registering a new part with reference to an animal
     @Test
-    public void testRegisterPart() throws Exception {
+    public void testRegisterPartWithAnimal() throws Exception {
+        // Mock dyret
+        Animal animal = new Animal();
+        animal.setId(1);
+        animal.setRegistrationNumber("A001");
+        animal.setWeight(500.0);
+        animal.setOrigin("Farm1");
+        animal.setArrivalDate("2024-01-01");
+
+        // Mock delen
         Part part = new Part();
         part.setId(1);
         part.setType("Leg");
         part.setWeight(25.0);
+        part.setAnimal(animal);
 
+        // Mock repository-kald
+        Mockito.when(animalRepository.findById(1)).thenReturn(Optional.of(animal));
         Mockito.when(partRepository.save(Mockito.any(Part.class))).thenReturn(part);
 
-        mockMvc.perform(post("/api/cutting/parts")
+        // Udfør test
+        mockMvc.perform(post("/api/cutting/parts?animalId=1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{ \"type\": \"Leg\", \"weight\": 25.0 }"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.type").value("Leg"))
-                .andExpect(jsonPath("$.weight").value(25.0));
+                .andExpect(jsonPath("$.weight").value(25.0))
+                .andExpect(jsonPath("$.animal.id").value(1))
+                .andExpect(jsonPath("$.animal.registrationNumber").value("A001"));
     }
 
     // Test for assigning a part to a tray
@@ -77,7 +98,6 @@ public class CuttingServiceTest {
                 .andExpect(jsonPath("$.tray.id").value(1)); // Check Tray ID
     }
 
-
     // Test for retrieving parts by animal ID
     @Test
     public void testGetPartsByAnimal() throws Exception {
@@ -104,5 +124,16 @@ public class CuttingServiceTest {
         mockMvc.perform(get("/api/cutting/trays?type=Leg"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].type").value("Leg"));
+    }
+
+    // Test for error handling when animal is not found
+    @Test
+    public void testRegisterPartWithInvalidAnimal() throws Exception {
+        Mockito.when(animalRepository.findById(99)).thenReturn(Optional.empty());
+
+        mockMvc.perform(post("/api/cutting/parts?animalId=99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"type\": \"Leg\", \"weight\": 25.0 }"))
+                .andExpect(status().isNotFound()); // Forvent en 404-fejl
     }
 }

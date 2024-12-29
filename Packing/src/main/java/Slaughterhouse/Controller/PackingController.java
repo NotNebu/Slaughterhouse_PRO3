@@ -20,10 +20,10 @@ public class PackingController {
     @Autowired
     private TrayRepository trayRepository;
 
-    // Create a new product from trays
+    // Create a new product
     @PostMapping("/products")
     public Product createProduct(@RequestBody Product product) {
-        // Validate that trays exist
+        // Ensure all trays exist
         for (Tray tray : product.getTrays()) {
             trayRepository.findById(tray.getId())
                     .orElseThrow(() -> new RuntimeException("Tray not found: " + tray.getId()));
@@ -32,7 +32,7 @@ public class PackingController {
         return productRepository.save(product);
     }
 
-    // Get all products
+    // Get all products or filter by status
     @GetMapping("/products")
     public List<Product> getProducts(@RequestParam(required = false) Product.ProductStatus status) {
         if (status != null) {
@@ -41,8 +41,7 @@ public class PackingController {
         return productRepository.findAll();
     }
 
-
-    // Get a product by ID
+    // Get product by ID
     @GetMapping("/products/{id}")
     public Product getProductById(@PathVariable Integer id) {
         return productRepository.findById(id)
@@ -52,14 +51,10 @@ public class PackingController {
     // Recall products related to a specific animal
     @GetMapping("/products/recall/{animalId}")
     public List<Product> recallProductsByAnimal(@PathVariable Integer animalId) {
-        // Custom query to find products related to the given animalId
-        return productRepository.findAll().stream()
-                .filter(product -> product.getTrays().stream()
-                        .flatMap(tray -> tray.getParts().stream())
-                        .anyMatch(part -> part.getAnimal().getId().equals(animalId)))
-                .toList();
+        return productRepository.findByAnimalId(animalId);
     }
 
+    // Mark a specific product as recalled
     @PutMapping("/products/{id}/recall")
     public ResponseEntity<String> markProductRecalled(@PathVariable Integer id) {
         Product product = productRepository.findById(id)
@@ -68,6 +63,4 @@ public class PackingController {
         productRepository.save(product);
         return ResponseEntity.ok("Product marked as recalled");
     }
-
 }
-

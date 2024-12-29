@@ -25,7 +25,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductStatus status = ProductStatus.ACTIVE;
 
-    // Getter and setter for 'id'
+    // Getters and setters
     public Integer getId() {
         return id;
     }
@@ -34,7 +34,6 @@ public class Product {
         this.id = id;
     }
 
-    // Getter and setter for 'description'
     public String getDescription() {
         return description;
     }
@@ -43,7 +42,6 @@ public class Product {
         this.description = description;
     }
 
-    // Getter and setter for 'trays'
     public List<Tray> getTrays() {
         return trays;
     }
@@ -52,7 +50,6 @@ public class Product {
         this.trays = trays;
     }
 
-    // Getter and setter for 'status'
     public ProductStatus getStatus() {
         return status;
     }
@@ -61,7 +58,6 @@ public class Product {
         this.status = status;
     }
 
-    // Enum for ProductStatus
     public enum ProductStatus {
         ACTIVE,
         RECALLED
